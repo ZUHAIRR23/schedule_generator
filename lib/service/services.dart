@@ -47,7 +47,7 @@ class Service {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data['candidates'][0]['content']['part'][0]['test'];
+        return data['candidates'][0]['content']['parts'][0]['text'];
       } else {
         return "Terjadi kesalahan ${response.statusCode} + ${response.body}";
       }
