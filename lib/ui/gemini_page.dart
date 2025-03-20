@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:schedule_generator/service/services.dart';
+import 'package:schedule_generator/ui/list_schedule.dart';
+import 'list_schedule.dart';
 
 class GeminiPage extends StatefulWidget {
   const GeminiPage({super.key});
@@ -84,11 +86,9 @@ class _GeminiPageState extends State<GeminiPage> {
             const SizedBox(height: 12),
             _buildTextField("Duration", _controllerDuration, Icons.timer, isNumber: true),
             const SizedBox(height: 12),
-            _buildDatePicker("From Date", _fromDate,
-                    () => _selectDate(context, true)),
+            _buildDatePicker("From Date", _fromDate, () => _selectDate(context, true)),
             const SizedBox(height: 12),
-            _buildDatePicker("Until Date", _untilDate,
-                    () => _selectDate(context, false)),
+            _buildDatePicker("Until Date", _untilDate, () => _selectDate(context, false)),
             const SizedBox(height: 24),
             FilledButton(
               onPressed: _isLoading ? null : _generateSchedule,
@@ -96,9 +96,7 @@ class _GeminiPageState extends State<GeminiPage> {
             ),
             const SizedBox(height: 24),
             _isLoading
-                ? const Center(
-              child: CircularProgressIndicator(),
-            )
+                ? const Center(child: CircularProgressIndicator())
                 : Card(
               elevation: 4,
               child: Padding(
@@ -114,11 +112,19 @@ class _GeminiPageState extends State<GeminiPage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ListSchedule()),
+          );
+        },
+        child: const Icon(Icons.list),
+      ),
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon,
-      {bool isNumber = false}) {
+  Widget _buildTextField(String label, TextEditingController controller, IconData icon, {bool isNumber = false}) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -162,7 +168,7 @@ class _GeminiPageState extends State<GeminiPage> {
       ),
       child: Row(
         children: [
-          Icon(Icons.calendar_today, size: 24),
+          const Icon(Icons.calendar_today, size: 24),
           const SizedBox(width: 12),
           Text(
             date == null
